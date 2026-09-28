@@ -16,7 +16,8 @@ WORKDIR /workspace
 
 # Copy source code and CloudWatch config
 COPY . .
-COPY clearml.conf /root/clearml.conf
+# Use the credential-free template; inject credentials at runtime.
+COPY clearml.conf.example /root/clearml.conf
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 

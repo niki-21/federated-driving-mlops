@@ -1,0 +1,4 @@
+# Private runtime configuration must not enter the build context.
+clearml.conf
+.env
+.env.*

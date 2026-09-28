@@ -84,7 +84,7 @@ The timing values are retained for traceability and should not be presented as v
 │   ├── entrypoint.sh               # Starts CloudWatch agent and client
 │   ├── requirements.txt
 │   ├── data.yaml                   # Client dataset paths and 11 classes
-│   ├── clearml.conf
+│   ├── clearml.conf.example
 │   ├── cloudwatch-config.json
 │   └── best_final.pt
 └── server/
@@ -93,7 +93,7 @@ The timing values are retained for traceability and should not be presented as v
     ├── entrypoint.sh               # Starts CloudWatch agent and server
     ├── requirements.txt
     ├── data.yaml                   # Server validation dataset paths
-    ├── clearml.conf
+    ├── clearml.conf.example
     ├── cloudwatch-container-config.json
     └── best_final.pt
 ```
@@ -104,7 +104,7 @@ The repository requires environment-specific preparation before it can run:
 
 1. Obtain the driving dataset and create separate client training partitions and a held-out server validation set. Update each `data.yaml` to resolve those paths inside its container. The current client YAML points training, validation, and test to the same `images` directory; use disjoint splits for meaningful evaluation.
 2. Replace the hard-coded server endpoint in `client/client.py` with your server address. The server listens on port `8080`; configure connectivity between the intended hosts. `CLIENT_ID` changes the ClearML task name, but does not select a dataset partition.
-3. **Replace the credential-bearing ClearML configurations before building images.** Both Dockerfiles copy `clearml.conf` into the image. Remove embedded credential values from your build inputs and supply fresh credentials at runtime using `CLEARML_API_ACCESS_KEY` and `CLEARML_API_SECRET_KEY`, or a private mounted configuration. Previously committed credentials should be revoked and rotated; do not reuse or publish them.
+3. **Configure ClearML credentials at runtime.** Both Dockerfiles use credential-free `clearml.conf.example` templates. Supply fresh credentials through `CLEARML_API_ACCESS_KEY` and `CLEARML_API_SECRET_KEY`, or copy the relevant template to a local `clearml.conf`, fill it privately, and mount it read-only at `/root/clearml.conf`. Local `clearml.conf` files are excluded from Git and Docker build contexts. Previously committed credentials **must be revoked and rotated in ClearML**; they remain exposed in earlier Git history and any previously built images. Do not reuse them. This cleanup does not rewrite Git history.
 4. Configure AWS region and permissions for CloudWatch, preferably through an EC2 IAM role. Provision EC2 instances and any AMIs, alarms, or scaling policies separately. The Dockerfiles download the Linux AMD64 CloudWatch agent.
 5. Resolve and pin compatible dependency versions before a reproducible run. Container requirements are unpinned; the notebook additionally needs Optuna, pandas, and a notebook runtime. Historical notebook output records Python 3.9.18, Ultralytics 8.3.114, and PyTorch 2.6.0+cu126, but this is not a validated container lockfile.
 

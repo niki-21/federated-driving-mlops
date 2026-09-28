@@ -1,4 +1,7 @@
-# ClearML SDK configuration file
+# ClearML SDK configuration template (no credentials).
+# Supply CLEARML_API_ACCESS_KEY and CLEARML_API_SECRET_KEY at runtime,
+# or copy to clearml.conf locally and mount it read-only at /root/clearml.conf.
+# Never commit credentials or include local clearml.conf files in Docker images.
 api {
     # Notice: 'host' is the api server (default port 8008), not the web server.
     api_server: https://api.clear.ml
@@ -6,7 +9,7 @@ api {
     files_server: https://files.clear.ml
     # Credentials are generated using the webapp, https://app.clear.ml//settings
     # Override with os environment: CLEARML_API_ACCESS_KEY / CLEARML_API_SECRET_KEY
-    credentials {"access_key": "S2GEZ5W9QJ7VVCJMZ1B77D48S33T5A", "secret_key": "A3d0yL8iHALe2eHYCWL_RXFSj56mWrjIgaWvLWaq8vGv9VItGoIPPzD2Nb2Ss13fw9o"}
+    credentials {"access_key": "", "secret_key": ""}
 }
 sdk {
     # ClearML - default SDK configuration

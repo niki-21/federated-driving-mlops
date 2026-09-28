@@ -1,0 +1,7 @@
+# Local ClearML credentials; commit only the .example templates.
+/client/clearml.conf
+/server/clearml.conf
+
+# Local environment secrets
+.env
+.env.*
